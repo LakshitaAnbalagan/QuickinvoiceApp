@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Invoices - QuickInvoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <h1 class="logo">QuickInvoice</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="invoice.html">Create Invoice</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="form-section">
+    <h2>All Invoices</h2>
+    <div class="invoice-list" id="invoiceList">
+      <p>Loading invoices...</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 QuickInvoice. All rights reserved.</p>
+  </footer>
+
+  <script>
+    async function fetchInvoices() {
+      try {
+        const response = await fetch("http://localhost:5000/invoices");
+        const invoices = await response.json();
+
+        const invoiceList = document.getElementById("invoiceList");
+        invoiceList.innerHTML = '';
+
+        if (invoices.length === 0) {
+          invoiceList.innerHTML = '<p>No invoices available.</p>';
+          return;
+        }
+
+        invoices.forEach(invoice => {
+          const invoiceItem = document.createElement('div');
+          invoiceItem.classList.add('invoice-item');
+
+          invoiceItem.innerHTML = `
+            <p><strong>Customer:</strong> ${invoice.customerName}</p>
+            <p><strong>Product:</strong> ${invoice.product}</p>
+            <p><strong>Total:</strong> ₹${invoice.quantity * invoice.price}</p>
+            <a href="http://localhost:5000/invoice/download/${invoice._id}" class="btn">Download Invoice</a>
+          `;
+
+          invoiceList.appendChild(invoiceItem);
+        });
+      } catch (error) {
+        console.error('Failed to load invoices:', error);
+        document.getElementById("invoiceList").innerHTML = '<p>Error loading invoices.</p>';
+      }
+    }
+
+    fetchInvoices();
+  </script>
+</body>
+</html>

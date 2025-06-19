@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Invoice - QuickInvoice</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <h1 class="logo">QuickInvoice</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="invoice.html">Create Invoice</a>
+        <a href="invoices.html">View Invoices</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="form-section">
+    <h2>Create New Invoice</h2>
+    <form id="invoiceForm" action="http://localhost:5000/create" method="POST">
+  <div class="form-group">
+        <label for="customerName">Customer Name</label>
+        <input type="text" name="customerName" id="customerName" required />
+      </div>
+
+      <div class="form-group">
+        <label for="product">Product</label>
+        <input type="text" name="product" id="product" required />
+      </div>
+
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" name="quantity" id="quantity" required />
+      </div>
+
+      <div class="form-group">
+        <label for="price">Price (₹)</label>
+        <input type="number" name="price" id="price" required />
+      </div>
+
+      <div class="form-group">
+        <label for="date">Date</label>
+        <input type="date" name="date" id="date" required />
+      </div>
+
+      <button type="submit" class="btn">Generate Invoice</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 QuickInvoice. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById("invoiceForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const data = {
+        customerName: document.getElementById("customerName").value,
+        product: document.getElementById("product").value,
+        quantity: parseInt(document.getElementById("quantity").value),
+        price: parseFloat(document.getElementById("price").value),
+       
+      };
+
+      try {
+        const response = await fetch("http://localhost:5000/invoices", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+          alert("✅ Invoice created successfully!");
+          document.getElementById("invoiceForm").reset();
+        } else {
+          alert("❌ Failed to create invoice.");
+        }
+      } catch (error) {
+        alert("⚠️ Error connecting to backend.");
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>

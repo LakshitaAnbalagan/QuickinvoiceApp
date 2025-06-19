@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuickInvoice - Home</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+      <h1 class="logo">QuickInvoice</h1>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="invoice.html">Create Invoice</a>
+        <a href="invoices.html">View Invoices</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Simplify Your Billing Process</h2>
+    <p>Create, manage, and track invoices effortlessly with QuickInvoice.</p>
+    <div class="hero-buttons">
+        <a href="invoice.html" class="btn">Create Invoice</a>
+        <a href="invoices.html" class="btn">View Invoices</a>
+        
+    </div>
+  </section>
+
+  <section class="features">
+    <h3>Why Use QuickInvoice?</h3>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h4>Fast Invoice Creation</h4>
+        <p>Create invoices within seconds using our clean, simple form.</p>
+      </div>
+      <div class="feature-card">
+        <h4>MongoDB Integration</h4>
+        <p>Store and manage invoices in a secure, scalable database.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Professional Design</h4>
+        <p>Modern layout and responsive design that works on all devices.</p>
+      </div>
+    </div>
+  </section>
+  <script>
+    function logout() {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    }
+
+    document.getElementById("invoiceForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch("http://localhost:5000/invoices", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": localStorage.getItem("token")
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          document.getElementById("message").innerText = "✅ Invoice created successfully!";
+          this.reset();
+        } else {
+          document.getElementById("message").innerText = "❌ " + (result.message || "Error creating invoice");
+        }
+      } catch (err) {
+        document.getElementById("message").innerText = "❌ Network error";
+      }
+    });
+  </script>
+
+  <footer>
+    <p>© 2025 QuickInvoice. All rights reserved.</p>
+  </footer>
+</body>
+</html>
