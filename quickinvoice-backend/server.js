@@ -11,10 +11,10 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection (local or Atlas via .env)
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/invoiceDB';
 
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
+
+mongoose.connect(process.env.MONGODB_URI, {
+useNewUrlParser: true,
   useUnifiedTopology: true
 })
   .then(() => console.log(`✅ MongoDB connected to ${mongoURI.includes('localhost') ? 'Local DB' : 'Atlas DB'}`))
