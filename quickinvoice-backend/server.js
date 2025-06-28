@@ -51,7 +51,7 @@ const User = mongoose.model('User', userSchema);
 const JWT_SECRET = 'your_jwt_secret_key';  // Make sure to keep it secret
 
 // Welcome Route
-app.get('/', (req, res) => {
+app.get('/users', (req, res) => {
   res.send('Welcome to the QuickInvoice API!');
 });
 
