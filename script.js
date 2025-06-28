@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     invoiceList.innerHTML = '<p>Loading invoices...</p>';
   
     // Fetch data from backend
-    fetch('http://localhost:5000/invoices')
+    fetch('https://quickinvoiceapp-2.onrender.com')
 
       .then(response => {
         if (!response.ok) {
