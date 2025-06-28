@@ -11,13 +11,13 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection (local or Atlas via .env)
+const MONGODB_URI="mongodb+srv://lakshitaanbalagan6:quickinvoice@cluster0.vufwowm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
-
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect(MONGODB_URI, {
 useNewUrlParser: true,
   useUnifiedTopology: true
 })
-  .then(() => console.log(`✅ MongoDB connected to ${mongoURI.includes('localhost') ? 'Local DB' : 'Atlas DB'}`))
+  .then(() => console.log(`✅ MongoDB connected to ${MONGODB_URI.includes('localhost') ? 'Local DB' : 'Atlas DB'}`))
   .catch(err => console.log('❌ MongoDB connection error:', err));
 
 
@@ -55,7 +55,7 @@ app.get('/', (req, res) => {
   res.send('Welcome to the QuickInvoice API!');
 });
 
-// ------------------ INVOICE ROUTES ------------------
+
 
 // GET all invoices
 app.get('/invoices', async (req, res) => {
@@ -78,7 +78,7 @@ app.post('/invoices', async (req, res) => {
   }
 });
 
-// ------------------ CONTACT ROUTE ------------------
+
 
 app.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
